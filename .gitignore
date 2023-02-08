@@ -13,7 +13,7 @@
 /out/
 
 # react
-/dist/
+./dist/
 
 # production
 /build
