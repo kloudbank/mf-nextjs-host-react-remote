@@ -1,6 +1,8 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ModuleFederationPlugin = require('webpack').container.ModuleFederationPlugin;
-const deps = require('./package.json').dependencies;
+const packageJsonDeps = require("./package.json")
+const path = require("path")
+
 module.exports = {
   entry: './src/index',
   entry: {
@@ -22,7 +24,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.jsx', '.js', '.json', '.mjs'],
+    extensions: ['.jsx', '.js', '.json', '.mjs', '.css'],
   },
 
   module: {
@@ -42,6 +44,17 @@ module.exports = {
           presets: [require.resolve('@babel/preset-react')],
         },
       },
+      {
+        test: /\.css?$/,
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader'
+          }
+        ],
+      },
     ],
   },
 
@@ -50,14 +63,28 @@ module.exports = {
       name: 'remote',
       filename: 'remoteEntry.js',
       exposes: {
-        // './react': 'react',
-        // './react-dom': 'react-dom',
         './Nav': './src/components/Nav',
+        './Logo': './src/components/Logo',
+        './GlobalNav': './src/components/GlobalNav',
+        './ExternalLink': './src/ui/ExternalLink',
+        './Tab': './src/ui/Tab',
+        './TabGroup': './src/ui/TabGroup',
       },
-      shared: {},
-    }),
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
+      // shared: {},
+      shared: {
+        react: {
+          // eager: true,
+          // requiredVersion: packageJsonDeps["react"],
+          requiredVersion: false,
+          singleton: true
+        },
+        "react-dom": {
+          // eager: true,
+          // requiredVersion: packageJsonDeps["react-dom"],
+          requiredVersion: false,
+          singleton: true
+        }
+      }
     }),
   ],
 };

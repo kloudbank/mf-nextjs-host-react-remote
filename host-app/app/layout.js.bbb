@@ -1,0 +1,32 @@
+'use client'
+import '@module-federation/nextjs-mf/src/include-defaults';
+
+// import { TabGroup } from '#/ui/TabGroup';
+import React from 'react';
+
+const TabGroup = dynamic(() => import('ui/TabGroup'), {
+  ssr: false,
+});
+
+export default function Layout({ children }) {
+  const ids = [{ id: '1' }, { id: '2' }, { id: '3' }];
+
+  return (
+    <div className="space-y-9">
+      <TabGroup
+        path="/ssr"
+        items={[
+          {
+            text: 'Home',
+          },
+          ...ids.map((x) => ({
+            text: `Post ${x.id}`,
+            slug: x.id,
+          })),
+        ]}
+      />
+
+      <div>{children}</div>
+    </div>
+  );
+}

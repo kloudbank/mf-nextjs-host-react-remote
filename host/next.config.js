@@ -1,3 +1,4 @@
+/** @type {import('next').NextConfig} */
 const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
 
 module.exports = {
@@ -7,7 +8,7 @@ module.exports = {
           new NextFederationPlugin({
             name: 'host',
             remotes: {
-              remote: 'remote@http://localhost:8081/remoteEntry.js',
+              remote: 'remote@http://localhost:3030/remoteEntry.js',
             },
             filename: 'static/chunks/remoteEntry.js',
           }),
