@@ -17,6 +17,10 @@ const RemoteGlobalNav = dynamic(() => import('ui/GlobalNav'), {
   ssr: false,
 });
 
+const RemoteNav = dynamic(() => import('ui/Nav'), {
+  ssr: false,
+});
+
 const ExternalLink = dynamic(() => import('ui/ExternalLink'), {
   ssr: false,
 });
@@ -32,8 +36,9 @@ export default function Home() {
           Get started by editing&nbsp;
           <code className={styles.code}>app/page.js</code>
         </p>
+        <RemoteNav />
         <div>
-          <RemoteGlobalNav />
+          {/* <RemoteGlobalNav /> */}
         </div>
         {/* <RemoteLogo /> */}
       </div>

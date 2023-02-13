@@ -1,0 +1,64 @@
+/** @type {import('next').NextConfig} */
+
+// const NextFederationPlugin = require('@module-federation/nextjs-mf');
+const ModuleFederationPlugin = require('webpack').container.ModuleFederationPlugin;
+const deps = require('./package.json').dependencies;
+
+const remotes = (isServer) => {
+  const location = isServer ? "ssr" : "chunks";
+  return {
+    // ui: `ui@http://localhost:3030/_next/static/${location}/remoteEntry.js`,
+    ui: `remote@http://localhost:3030/remoteEntry.js`,
+  };
+};
+
+const DEFAULT_SHARE_SCOPE = {
+  react: {
+    singleton: true,
+    requiredVersion: false,
+  },
+  'react-dom': {
+    singleton: true,
+    requiredVersion: false,
+  },
+};
+
+const federationConfig = {
+  name: 'app',
+  filename: 'static/chunks/remoteEntry.js',
+  // exposes: {},
+  shared: {
+    // ...DEFAULT_SHARE_SCOPE,
+    'react-dom': {
+      singleton: true,
+      // requiredVersion: deps['react-dom'],
+      // eager: true,
+    },
+    react: {
+      singleton: true,
+      // requiredVersion: deps['react'],
+      // eager: true,
+    },
+  },
+};
+
+const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: true,
+  experimental: {
+    appDir: true,
+  },
+  webpack: (config, options) => {
+    if (!options.isServer) {
+      config.plugins.push(
+        new ModuleFederationPlugin({
+          ...federationConfig,
+          remotes: remotes(options.isServer),
+        }),
+      );
+    }
+    return config;
+  },
+};
+
+module.exports = nextConfig;

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import dynamic from 'next/dynamic';
 
-const ReactRemoteComponent = dynamic(() => import('remote/Nav'), {
+const ReactRemoteComponent = dynamic(() => import('ui/Nav'), {
   ssr: false,
 });
 

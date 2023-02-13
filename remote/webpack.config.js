@@ -1,6 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ModuleFederationPlugin = require('webpack').container.ModuleFederationPlugin;
-const packageJsonDeps = require("./package.json")
+const deps = require('./package.json').dependencies;
 const path = require("path")
 
 module.exports = {
@@ -74,17 +74,21 @@ module.exports = {
       shared: {
         react: {
           // eager: true,
-          // requiredVersion: packageJsonDeps["react"],
+          // requiredVersion: deps["react"],
           requiredVersion: false,
-          singleton: true
+          singleton: true,
         },
         "react-dom": {
           // eager: true,
-          // requiredVersion: packageJsonDeps["react-dom"],
+          // requiredVersion: deps["react-dom"],
           requiredVersion: false,
           singleton: true
         }
       }
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: 'index.html',
     }),
   ],
 };
