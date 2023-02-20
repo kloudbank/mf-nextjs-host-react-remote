@@ -8,3 +8,11 @@ nextjs v13, experimental appDir 사용 기반 host app
 
 # remote
 react 기반 remote module
+
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
